@@ -1,0 +1,21 @@
+
+services:
+  - type: web
+    name: chatgram
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: chatgram-db
+          property: connectionString
+
+databases:
+  - name: chatgram-db
+    plan: free
